@@ -5,7 +5,7 @@ plugins {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.github.triplet.play'
 
 Properties properties = new Properties()
@@ -27,6 +27,11 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     if (localPropertiesFiles.exists()) {
         signingConfigs {
             release {
@@ -46,18 +51,22 @@ android {
                 signingConfig signingConfigs.release
         }
     }
+    buildFeatures{
+        viewBinding true
+    }
 }
 
 dependencies {
     implementation project(path: ':williamchart')
     implementation project(path: ':slidertooltip')
+    implementation project(path: ':pointstooltip')
     //implementation "com.diogobernardino:williamchart:$rootProject.williamchartVersion"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$rootProject.kotlinVersion"
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'com.google.android.material:material:1.2.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    testImplementation 'junit:junit:4.13.1'
-    androidTestImplementation 'androidx.test:runner:1.3.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test:runner:1.5.2'
 }
 
 play {
