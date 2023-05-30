@@ -7,63 +7,87 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.db.williamchart.ExperimentalFeature
+import com.db.williamchart.Tooltip
+import com.db.williamchart.pointtooltip.PointTooltip
 import com.db.williamchart.slidertooltip.SliderTooltip
-import kotlinx.android.synthetic.main.demo_fragment.*
+import com.db.williamchartdemo.databinding.DemoFragmentBinding
 
 class DemoFragment : Fragment() {
-
+    private lateinit var binding: DemoFragmentBinding
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.demo_fragment, container, false)
+    ): View{
+        binding = DemoFragmentBinding.inflate(layoutInflater)
+        return binding.root
+//            inflater.inflate(R.layout.demo_fragment, container, false)
+    }
 
     @OptIn(ExperimentalFeature::class)
     override fun onViewCreated(view: View, saveInstanceState: Bundle?) {
-
         /**
          * Line Chart
          */
-        lineChart.gradientFillColors =
-            intArrayOf(
+        binding.lineChart.apply {
+            gradientFillColors = intArrayOf(
                 Color.parseColor("#81FFFFFF"),
                 Color.TRANSPARENT
             )
-        lineChart.animation.duration = animationDuration
-        lineChart.tooltip =
-            SliderTooltip().also {
-                it.color = Color.WHITE
+            animation.duration = animationDuration
+            tooltip = PointTooltip().also {
+                it.drawableRes = R.drawable.circle_point
+//                it.color = Color.WHITE
             }
-        lineChart.onDataPointTouchListener = { index, _, _ ->
-            lineChartValue.text =
-                lineSet.toList()[index]
+            onDataPointTouchListener = { index, _, _ ->
+                binding.lineChartValue.text =
+                    lineSet.toList()[index]
                     .second
                     .toString()
+            }
+            animate(lineSet)
         }
-        lineChart.animate(lineSet)
+//        lineChart.gradientFillColors =
+//            intArrayOf(
+//                Color.parseColor("#81FFFFFF"),
+//                Color.TRANSPARENT
+//            )
+//        lineChart.animation.duration = animationDuration
+//        lineChart.tooltip =
+//            SliderTooltip().also {
+//                it.color = Color.WHITE
+//            }
+//        lineChart.onDataPointTouchListener = { index, _, _ ->
+//            lineChartValue.text =
+//                lineSet.toList()[index]
+//                    .second
+//                    .toString()
+//        }
+//        lineChart.animate(lineSet)
 
         /**
          * Bar Chart
          */
-        barChart.animation.duration = animationDuration
-        barChart.animate(barSet)
+        binding.barChart.animation.duration = animationDuration
+        binding.barChart.animate(barSet)
+//        binding.barChart.onDataPointClickListener = SliderTooltip().onDataPointClick()
 
         /**
          * Donut Chart
          */
-        donutChart.donutColors = intArrayOf(
+        binding.donutChart.donutColors = intArrayOf(
             Color.parseColor("#FFFFFF"),
             Color.parseColor("#9EFFFFFF"),
             Color.parseColor("#8DFFFFFF")
         )
-        donutChart.animation.duration = animationDuration
-        donutChart.animate(donutSet)
+        binding.donutChart.animation.duration = animationDuration
+        binding.donutChart.animate(donutSet)
 
         /**
          * Horizontal Bar Chart
          */
-        horizontalBarChart.animation.duration = animationDuration
-        horizontalBarChart.animate(horizontalBarSet)
+        binding.horizontalBarChart.animation.duration = animationDuration
+        binding.horizontalBarChart.animate(horizontalBarSet)
     }
 
     companion object {
